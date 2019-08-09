@@ -75,8 +75,8 @@ def replace_extension_to_html(path):
 
 def group_items_in_array(array, group_volume=3):
     grouped_items = []
-    for i in range(0, len(array), group_volume):
-        grouped_items.append(array[i:i+group_volume])
+    for start_index_group in range(0, len(array), group_volume):
+        grouped_items.append(array[start_index_group:start_index_group+group_volume])
     return grouped_items
 
 
