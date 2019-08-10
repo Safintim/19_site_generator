@@ -7,8 +7,9 @@ from collections import defaultdict
 
 CONFIG_JSON = 'config.json'
 STATIC_DIR = 'static/html/'
-TEMPLATES_DIR = 'templates/'
 DIR_ARTICLES = 'articles/'
+TEMPLATES_DIR = 'templates/'
+TEMPLATES_ENV = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=True)
 TEMPLATE_ARTICLES = 'articles.html'
 TEMPLATE_INDEX = 'index.html'
 
@@ -31,9 +32,7 @@ def convert_articles_to_html(articles):
 
 
 def render_index_to_template(topics, articles):
-
-    env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=True)
-    html = env.get_template(TEMPLATE_INDEX).render(
+    html = TEMPLATES_ENV.get_template(TEMPLATE_INDEX).render(
                         grouped_topics=group_items_in_array(topics),
                         articles=normalize_articles(articles))
     save_to_static(TEMPLATE_INDEX, html)
@@ -55,8 +54,7 @@ def convert_md_to_html(md):
 
 
 def render_article_to_template(article, html):
-    env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=True)
-    return env.get_template(TEMPLATE_ARTICLES).render(html=html, title=article['title'])
+    return TEMPLATES_ENV.get_template(TEMPLATE_ARTICLES).render(html=html, title=article['title'])
 
 
 def save_to_static(path, content):
