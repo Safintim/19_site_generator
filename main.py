@@ -1,4 +1,5 @@
 import os
+import copy
 import json
 import markdown
 from jinja2 import Environment, FileSystemLoader
@@ -18,8 +19,9 @@ def main():
     config = load_json(CONFIG_JSON)
     topics = config['topics']
     articles = config['articles']
-    convert_articles_to_html(articles)
-    render_index_to_template(topics, articles)
+    articles_copy = copy.deepcopy(articles)
+    convert_articles_to_html(articles_copy)
+    render_index_to_template(topics, articles_copy)
 
 
 def convert_articles_to_html(articles):
@@ -81,7 +83,7 @@ def group_items_in_array(array, group_volume=3):
 def normalize_articles(articles):
     grouped_articles = defaultdict(list)
     for article in articles:
-        article['source'] = replace_extension_to_html(article['source'])
+        article['source_to_html'] = replace_extension_to_html(article['source'])
         grouped_articles[article['topic']].append(article)
     return grouped_articles
 
