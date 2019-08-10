@@ -31,14 +31,15 @@ def convert_articles_to_html(articles):
         raw_html = convert_md_to_html(text)
         html = render_article_to_template(article, raw_html)
         filepath = replace_extension_to_html(article['source'])
-        save_to_static(filepath, html)
+        save_to_html(filepath, html)
 
 
 def render_index_to_template(topics, articles):
     html = TEMPLATES_ENV.get_template(TEMPLATE_INDEX).render(
                         grouped_topics=group_items_in_array(topics),
-                        articles=normalize_articles(articles))
-    save_to_static(TEMPLATE_INDEX, html)
+                        articles=normalize_articles(articles),
+                        static='../'+STATIC_DIR)
+    save_to_html(TEMPLATE_INDEX, html)
 
 
 def load_json(jsonpath):
@@ -57,15 +58,18 @@ def convert_md_to_html(md):
 
 
 def render_article_to_template(article, html):
-    return TEMPLATES_ENV.get_template(TEMPLATE_ARTICLES).render(html=html, title=article['title'])
+    return TEMPLATES_ENV.get_template(TEMPLATE_ARTICLES).render(
+                                            html=html,
+                                            title=article['title'],
+                                            static='../../'+STATIC_DIR)
 
 
-def save_to_static(path, content):
-    dirname = STATIC_DIR + os.path.dirname(path)
+def save_to_html(path, content):
+    dirname = HTML_DIR + os.path.dirname(path)
     if dirname:
         os.makedirs(dirname, exist_ok=True)
 
-    with open(STATIC_DIR + path, 'w') as file_obj:
+    with open(HTML_DIR + path, 'w') as file_obj:
         file_obj.write(content)
 
 
