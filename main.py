@@ -7,7 +7,8 @@ from collections import defaultdict
 
 
 CONFIG_JSON = 'config.json'
-STATIC_DIR = 'static/html/'
+STATIC_DIR = 'static/'
+HTML_DIR = 'docs/'
 DIR_ARTICLES = 'articles/'
 TEMPLATES_DIR = 'templates/'
 TEMPLATES_ENV = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=True)
