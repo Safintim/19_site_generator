@@ -20,9 +20,8 @@ def main():
     config = load_json(CONFIG_JSON)
     topics = config['topics']
     articles = config['articles']
-    articles_copy = copy.deepcopy(articles)
-    convert_articles_to_html(articles_copy)
-    render_index_to_template(topics, articles_copy)
+    convert_articles_to_html(articles)
+    render_index_to_template(topics, articles)
 
 
 def convert_articles_to_html(articles):
@@ -86,6 +85,7 @@ def group_items_in_array(array, group_volume=3):
 
 
 def normalize_articles(articles):
+    articles = copy.deepcopy(articles)
     grouped_articles = defaultdict(list)
     for article in articles:
         article['source_to_html'] = replace_extension_to_html(article['source'])
